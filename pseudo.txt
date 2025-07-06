@@ -1,0 +1,17 @@
+create 16 x 16 grid of square divs with javascript !
+
+make sure they're in a container !
+
+flexbox can give grid appearance !
+
+watch borders and margins (square size) !
+
+hover event so grid divs change colors on pass over
+
+can either add class to div or change background color
+through javascript
+
+add a button that changes number of squares per grid while keeping
+same total space (960 px) (limit 100 squares)
+
+eraser sets color to white
