@@ -25,6 +25,10 @@ h1 {
   background-color: white;
 }
 
+/* .cell:hover {
+  background-color: ;
+} */
+
 input[type="color"] {
   -webkit-appearance: none; /* Remove default appearance */
   -moz-appearance: none;
@@ -63,9 +67,12 @@ button {
   border-radius: 5px;
   border: 1px solid black;
   background-color: transparent;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .active {
-  background-color: gray;
+  background-color: rgb(74, 74, 74);
   color: white;
+  border-color: white;
 }
