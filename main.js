@@ -54,3 +54,10 @@ buttons.forEach((button) => {
     }
   });
 });
+
+const clearButton = document.getElementById("clear-btn");
+clearButton.addEventListener("click", () => {
+  cells.forEach((cell) => {
+    cell.style.backgroundColor = "#ffffff";
+  });
+});
