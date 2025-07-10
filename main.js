@@ -1,20 +1,15 @@
 const grid = document.querySelector(".grid-container");
 const colorPicker = document.querySelector(".color-picker");
+const colorButton = document.getElementById("color-btn");
+const eraseButton = document.getElementById("eraser-btn");
 
 let isMouseDown = false;
 let currentColor = colorPicker.value;
+let mode = "color";
 
 colorPicker.addEventListener("input", (e) => {
   currentColor = e.target.value;
 });
-
-for (let i = 0; i < 16; i++) {
-  for (let j = 0; j < 16; j++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    grid.appendChild(cell);
-  }
-}
 
 document.body.addEventListener("mousedown", () => {
   isMouseDown = true;
@@ -23,23 +18,39 @@ document.body.addEventListener("mouseup", () => {
   isMouseDown = false;
 });
 
+for (let i = 0; i < 16 * 16; i++) {
+  const cell = document.createElement("div");
+  cell.classList.add("cell");
+  grid.appendChild(cell);
+}
+
+const cells = document.querySelectorAll(".cell");
+
+function paintCell(cell) {
+  if (mode === "erase") {
+    cell.style.backgroundColor = "#ffffff";
+  } else {
+    cell.style.backgroundColor = currentColor;
+  }
+}
+
+cells.forEach((cell) => {
+  cell.addEventListener("mousedown", () => paintCell(cell));
+  cell.addEventListener("mouseover", () => {
+    if (isMouseDown) paintCell(cell);
+  });
+});
+
 const buttons = document.querySelectorAll(".btn");
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
     buttons.forEach((btn) => btn.classList.remove("active"));
     this.classList.add("active");
-  });
-});
 
-const cells = document.querySelectorAll(".cell");
-cells.forEach((cell) => {
-  cell.addEventListener("mousedown", () => {
-    cell.style.backgroundColor = currentColor;
-  });
-
-  cell.addEventListener("mouseover", () => {
-    if (isMouseDown) {
-      cell.style.backgroundColor = currentColor;
+    if (this.id === "eraser-btn") {
+      mode = "erase";
+    } else if (this.id === "color-btn") {
+      mode = "color";
     }
   });
 });
