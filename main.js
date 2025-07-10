@@ -2,10 +2,14 @@ const grid = document.querySelector(".grid-container");
 const colorPicker = document.querySelector(".color-picker");
 const colorButton = document.getElementById("color-btn");
 const eraseButton = document.getElementById("eraser-btn");
+const clearButton = document.getElementById("clear-btn");
+const sizeSlider = document.querySelector(".size-value");
+const sizeLabel = document.querySelector(".size-slider");
 
 let isMouseDown = false;
 let currentColor = colorPicker.value;
 let mode = "color";
+let gridSize = parseInt(sizeSlider.value);
 
 colorPicker.addEventListener("input", (e) => {
   currentColor = e.target.value;
@@ -18,28 +22,27 @@ document.body.addEventListener("mouseup", () => {
   isMouseDown = false;
 });
 
-for (let i = 0; i < 16 * 16; i++) {
-  const cell = document.createElement("div");
-  cell.classList.add("cell");
-  grid.appendChild(cell);
-}
+function createGrid(size) {
+  grid.innerHTML = "";
+  grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${size}, 1fr)`;
 
-const cells = document.querySelectorAll(".cell");
-
-function paintCell(cell) {
-  if (mode === "erase") {
+  for (let i = 0; i < size * size; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
     cell.style.backgroundColor = "#ffffff";
-  } else {
-    cell.style.backgroundColor = currentColor;
+
+    cell.addEventListener("mousedown", () => paintCell(cell));
+    cell.addEventListener("mouseover", () => {
+      if (isMouseDown) paintCell(cell);
+    });
+    grid.appendChild(cell);
   }
 }
 
-cells.forEach((cell) => {
-  cell.addEventListener("mousedown", () => paintCell(cell));
-  cell.addEventListener("mouseover", () => {
-    if (isMouseDown) paintCell(cell);
-  });
-});
+function paintCell(cell) {
+  cell.style.backgroundColor = mode === "erase" ? "#ffffff" : currentColor;
+}
 
 const buttons = document.querySelectorAll(".btn");
 buttons.forEach((button) => {
@@ -55,9 +58,20 @@ buttons.forEach((button) => {
   });
 });
 
-const clearButton = document.getElementById("clear-btn");
 clearButton.addEventListener("click", () => {
-  cells.forEach((cell) => {
-    cell.style.backgroundColor = "#ffffff";
-  });
+  const cells = document.querySelectorAll(".cell");
+  cells.forEach((cell) => (cell.style.backgroundColor = "#ffffff"));
 });
+
+sizeSlider.addEventListener("input", (e) => {
+  gridSize = parseInt(e.target.value);
+  updateSizeLabel(gridSize);
+  createGrid(gridSize);
+});
+
+function updateSizeLabel(size) {
+  sizeLabel.firstChild.textContent = `${size}x${size} `;
+}
+
+updateSizeLabel(gridSize);
+createGrid(gridSize);
