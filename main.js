@@ -40,10 +40,22 @@ function createGrid(size) {
   }
 }
 
-function paintCell(cell) {
-  cell.style.backgroundColor = mode === "erase" ? "#ffffff" : currentColor;
+function getRainbow() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
+function paintCell(cell) {
+  if (mode === "erase") {
+    cell.style.backgroundColor = "#ffffff";
+  } else if ((mode = "rainbow")) {
+    cell.style.backgroundColor = getRainbow();
+  } else {
+    cell.style.backgroundColor = currentColor;
+  }
+}
 const buttons = document.querySelectorAll(".btn");
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
@@ -54,6 +66,8 @@ buttons.forEach((button) => {
       mode = "erase";
     } else if (this.id === "color-btn") {
       mode = "color";
+    } else if (this.id === "rainbow=btn") {
+      mode = "rainbow";
     }
   });
 });
