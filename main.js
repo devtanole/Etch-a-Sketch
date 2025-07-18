@@ -50,7 +50,7 @@ function getRainbow() {
 function paintCell(cell) {
   if (mode === "erase") {
     cell.style.backgroundColor = "#ffffff";
-  } else if ((mode = "rainbow")) {
+  } else if (mode === "rainbow") {
     cell.style.backgroundColor = getRainbow();
   } else {
     cell.style.backgroundColor = currentColor;
@@ -66,7 +66,7 @@ buttons.forEach((button) => {
       mode = "erase";
     } else if (this.id === "color-btn") {
       mode = "color";
-    } else if (this.id === "rainbow=btn") {
+    } else if (this.id === "rainbow-btn") {
       mode = "rainbow";
     }
   });
