@@ -89,3 +89,79 @@ function updateSizeLabel(size) {
 
 updateSizeLabel(gridSize);
 createGrid(gridSize);
+
+function saveDrawing() {
+  const name = prompt("Enter a name.");
+  if (!name) return;
+  const $cells = document.querySelectorAll(".cell");
+  const cells = [];
+
+  $cells.forEach((cell) => {
+    const color = window.getComputedStyle(cell).backgroundColor;
+    cells.push(color);
+  });
+
+  const gridSize = Math.sqrt($cells.length);
+
+  const drawing = {
+    name,
+    gridSize,
+    colors: cells,
+  };
+
+  let savedDrawings = JSON.parse(localStorage.getItem("savedDrawings"));
+  if (!savedDrawings) {
+    savedDrawings = [];
+  }
+  savedDrawings.push(drawing);
+
+  localStorage.setItem("savedDrawings", JSON.stringify(savedDrawings));
+  alert("Drawing saved");
+}
+
+function loadDrawing(name) {
+  const savedDrawings = JSON.parse(localStorage.getItem("savedDrawings"));
+  if (!savedDrawings) return;
+
+  const drawing = savedDrawings.find((d) => d.name === name);
+  if (!drawing) return;
+
+  createGrid(drawing.gridSize);
+  const $cells = document.querySelectorAll(".cell");
+
+  $cells.forEach((cell, index) => {
+    cell.style.backgroundColor = drawing.colors[index];
+  });
+}
+
+function updateDrawing(nameToUpdate) {
+  const $cells = document.querySelectorAll(".cell");
+  const updatedCells = [];
+
+  $cells.forEach((cell) => {
+    const color = window.getComputedStyle(cell).backgroundColor;
+    updatedCells.push(color);
+  });
+
+  let savedDrawings = JSON.parse(localStorage.getItem("savedDrawings")) || [];
+
+  savedDrawings.forEach((d) => {
+    if (d.name === nameToUpdate) {
+      drawing.colors = updatedCells;
+      drawing.gridSize = Math.sqrt($cells.length);
+      // break;
+    }
+  });
+
+  localStorage.setItem("savedDrawings", JSON.stringify(savedDrawings));
+  alert("Drawing updated");
+}
+
+function deleteDrawing(drawingToDelete) {
+  let savedDrawings = JSON.parse(localStorage.getItem("savedDrawings")) || [];
+  savedDrawings = savedDrawings.filter((d) => d.name !== drawingToDelete);
+
+  localStorage.getItem("savedDrawings", JSON.stringify(savedDrawings));
+
+  alert("Successfully deleted");
+}

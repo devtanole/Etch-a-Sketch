@@ -1,0 +1,74 @@
+function for saving drawings
+
+FUNCTION saveDrawing:
+    PROMPT user to enter a name for the drawing
+    IF no name entered:
+        RETURN (exit function)
+
+    SELECT all grid squares
+    INITIALIZE empty list called cells
+
+    FOR each square in the grid:
+        GET the background color of the square
+        ADD the color to the cells list
+
+    CALCULATE the grid size (e.g., 16 for 16x16)
+
+    CREATE a drawing object with:
+        - name (from user input)
+        - gridSize
+        - cells (list of colors)
+
+    RETRIEVE existing saved drawings from localStorage
+    IF none found:
+        INITIALIZE an empty list
+
+    ADD the new drawing object to the list
+
+    CONVERT the updated list to a JSON string
+
+    STORE the string in localStorage under the key "savedDrawings"
+
+    SHOW a confirmation message to the user
+
+FUNCTION loadDrawing(drawing):
+    CALL createGrid with the drawing's gridSize
+
+    SELECT all grid squares
+
+    FOR each square and its corresponding saved color:
+        SET the square's background color to the saved color
+
+---
+
+FUNCTION updateDrawing(nameToUpdate):
+    SELECT all grid squares
+    INITIALIZE empty list called updatedCells
+
+    FOR each square:
+        GET the background color
+        ADD it to updatedCells list
+
+    RETRIEVE saved drawings from localStorage
+
+    FOR each saved drawing in the list:
+        IF drawing name matches nameToUpdate:
+            UPDATE its cells with updatedCells
+            BREAK loop
+
+    SAVE the updated drawings list back to localStorage
+
+    SHOW confirmation that drawing was updated
+
+---
+
+FUNCTION saveAsNewDrawing:
+    (Same steps as saveDrawing above)
+
+
+WHEN user loads a drawing:
+    ALLOW them to make changes to the grid
+
+    SHOW buttons:
+        - "Save Changes" → calls updateDrawing(name)
+        - "Save as New" → calls saveDrawing() with new name prompt
