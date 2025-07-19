@@ -5,6 +5,7 @@ const eraseButton = document.getElementById("eraser-btn");
 const clearButton = document.getElementById("clear-btn");
 const sizeSlider = document.querySelector(".size-value");
 const sizeLabel = document.querySelector(".size-slider");
+const sizeLabelText = document.querySelector(".size-label-text");
 const deleteButton = document.getElementById("delete-btn");
 const loadButton = document.getElementById("load-btn");
 const saveButton = document.getElementById("save-btn");
@@ -87,7 +88,7 @@ sizeSlider.addEventListener("input", (e) => {
 });
 
 function updateSizeLabel(size) {
-  sizeLabel.firstChild.textContent = `${size}x${size} `;
+  sizeLabelText.textContent = `${size}x${size} `;
 }
 
 updateSizeLabel(gridSize);
@@ -142,6 +143,10 @@ function loadDrawing(name) {
   if (!drawing) return;
 
   createGrid(drawing.gridSize);
+
+  sizeSlider.value = drawing.gridSize;
+  updateSizeLabel(drawing.gridSize);
+
   const $cells = document.querySelectorAll(".cell");
 
   $cells.forEach((cell, index) => {
@@ -162,9 +167,9 @@ function updateDrawing(nameToUpdate) {
 
   savedDrawings.forEach((d) => {
     if (d.name === nameToUpdate) {
-      drawing.colors = updatedCells;
-      drawing.gridSize = Math.sqrt($cells.length);
-      // break;
+      d.colors = updatedCells;
+      d.gridSize = Math.sqrt($cells.length);
+      // break
     }
   });
 

@@ -88,6 +88,34 @@ button {
   font-family: Arial, sans-serif;
 }
 
+.drawing-controls-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+}
+
+#drawing-select {
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  appearance: none; /* removes default arrow on most browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10'%3E%3Cpath fill='black' d='M7 10L0 0h14z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75em center;
+  background-size: 10px;
+  min-width: 200px;
+  transition: border 0.2s, background-color 0.2s;
+}
+
 /* Responsive tweaks (optional) */
 @media (max-width: 500px) {
   input[type="color"] {
