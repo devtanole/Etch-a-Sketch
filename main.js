@@ -5,6 +5,9 @@ const eraseButton = document.getElementById("eraser-btn");
 const clearButton = document.getElementById("clear-btn");
 const sizeSlider = document.querySelector(".size-value");
 const sizeLabel = document.querySelector(".size-slider");
+const deleteButton = document.getElementById("delete-btn");
+const loadButton = document.getElementById("load-btn");
+const saveButton = document.getElementById("save-btn");
 
 let isMouseDown = false;
 let currentColor = colorPicker.value;
@@ -103,7 +106,7 @@ function saveDrawing() {
 
   const gridSize = Math.sqrt($cells.length);
 
-  const drawing = {
+  const newDrawing = {
     name,
     gridSize,
     colors: cells,
@@ -113,9 +116,21 @@ function saveDrawing() {
   if (!savedDrawings) {
     savedDrawings = [];
   }
-  savedDrawings.push(drawing);
+  const existingIndex = savedDrawings.findIndex((d) => d.name === name);
+
+  if (existingIndex !== -1) {
+    const confirmUpdate = confirm(
+      `A drawing named "${name}" already exists. Overwrite it?`
+    );
+    if (!confirmUpdate) return;
+
+    savedDrawings[existingIndex] = newDrawing;
+  } else {
+    savedDrawings.push(newDrawing);
+  }
 
   localStorage.setItem("savedDrawings", JSON.stringify(savedDrawings));
+  updateDrawingDropdown();
   alert("Drawing saved");
 }
 
@@ -161,7 +176,49 @@ function deleteDrawing(drawingToDelete) {
   let savedDrawings = JSON.parse(localStorage.getItem("savedDrawings")) || [];
   savedDrawings = savedDrawings.filter((d) => d.name !== drawingToDelete);
 
-  localStorage.getItem("savedDrawings", JSON.stringify(savedDrawings));
+  localStorage.setItem("savedDrawings", JSON.stringify(savedDrawings));
 
   alert("Successfully deleted");
 }
+
+function updateDrawingDropdown() {
+  const select = document.getElementById("drawing-select");
+  const savedDrawings = JSON.parse(localStorage.getItem("savedDrawings")) || [];
+
+  select.innerHTML = '<option value="">-- Select a drawing --</option>';
+
+  savedDrawings.forEach((drawing) => {
+    const option = document.createElement("option");
+    option.value = drawing.name;
+    option.textContent = drawing.name;
+    select.appendChild(option);
+  });
+}
+
+deleteButton.addEventListener("click", () => {
+  const select = document.getElementById("drawing-select");
+  const name = select.value;
+  if (!name) {
+    alert("select a drawing to delete");
+    return;
+  }
+  if (confirm(`Are you sure you want to delete "${name}"?`)) {
+    deleteDrawing(name);
+    updateDrawingDropdown();
+    createGrid(gridSize);
+  }
+});
+
+loadButton.addEventListener("click", () => {
+  const name = document.getElementById("drawing-select").value;
+  if (!name) {
+    alert("select a drawing to load");
+    return;
+  }
+  loadDrawing(name);
+});
+
+saveButton.addEventListener("click", () => {
+  saveDrawing();
+  updateDrawingDropdown();
+});
