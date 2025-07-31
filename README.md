@@ -42,4 +42,9 @@ To take this project beyond the original scope, I added local storage support so
 - Improving UX with visual feedback and save prompts
 - Persisting user data with `localStorage`
 
+## Screenshots
+
+<img width="1792" height="1120" alt="Screenshot 2025-07-18 at 11 01 45 PM" src="https://github.com/user-attachments/assets/d1e1ebce-c7e6-4da4-8c85-2d22341c06e2" />
+
+
 ---
